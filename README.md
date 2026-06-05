@@ -1,5 +1,5 @@
 # Ataque DoS mediante el Protocolo CDP
-Nombre: Henry Vicente Quezada | Matrícula: 2025-1332 | Fecha: 06 de Junio 2026
+**Nombre:** Henry Vicente Quezada | **Matrícula:** 2025-1332 | **Fecha:** 06 de Junio 2026
 
 ---
 
