@@ -43,23 +43,28 @@ Generar una inundación masiva de paquetes CDP falsos con Device IDs y MACs alea
 ```bash
 
 Crear y guardar el script:
-bashnano /home/kali-linux/cdp_dos.py
+bash
+nano /home/kali-linux/cdp_dos.py
 
 Pega el contenido del script, luego guarda con Ctrl+O → Enter → Ctrl+X
 
 Dar permisos de ejecución:
-bashchmod +x /home/kali-linux/cdp_dos.py
+bash
+chmod +x /home/kali-linux/cdp_dos.py
 
 Pasos de ejecución:
 
 Paso 1 — SW1: Ver vecinos CDP antes del ataque
-bashshow cdp neighbors
+bash
+show cdp neighbors
 
 Paso 2 — Kali: Ejecutar el ataque
-bashsudo python3 /home/kali-linux/cdp_dos.py eth0 500
+bash
+sudo python3 /home/kali-linux/cdp_dos.py eth0 500
 
 Paso 3 — SW1: Verificar tabla CDP saturada
-bashshow cdp neighbors
+bash
+show cdp neighbors
 
 Paso 4 — SW1: Aplicar contramedida
 conf t
@@ -71,7 +76,8 @@ Paso 5 — SW1: Verificar que CDP está deshabilitado
 show cdp neighbors
 
 Paso 6 — Kali: Ejecutar ataque nuevamente
-bashsudo python3 /home/kali-linux/cdp_dos.py eth0 200
+bash
+sudo python3 /home/kali-linux/cdp_dos.py eth0 200
 
 Paso 7 — SW1: Verificar que el ataque no tiene efecto
 show cdp neighbors
