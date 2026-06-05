@@ -145,6 +145,7 @@ SW1(config-if)# no cdp enable
 ! Verificación
 SW1# show cdp neighbors
 % CDP is not enabled
+
 ---
 
 ## 4. Documentación de la Red
