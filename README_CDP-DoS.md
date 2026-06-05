@@ -87,8 +87,8 @@ sudo python3 cdp_dos.py eth0 500
 ## 5. Capturas de Pantalla
 
 ### Antes del ataque
-<!-- ![Antes](capturas/cdp_antes.png) -->
-> 📷 `SW1# show cdp neighbors` — Solo R1 como vecino
+<img width="348" height="242" alt="Captura 1" src="https://github.com/user-attachments/assets/80fb7aac-0cc2-43a2-b4aa-8e66fb5ba482" />
+
 
 ### Script en ejecución
 <!-- ![Script](capturas/cdp_script.png) -->
