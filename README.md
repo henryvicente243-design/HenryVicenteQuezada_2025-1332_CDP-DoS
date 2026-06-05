@@ -86,14 +86,22 @@ sudo python3 cdp_dos.py eth0 500
 ### Antes del ataque
 <img width="611" height="429" alt="image" src="https://github.com/user-attachments/assets/d224a82b-d4aa-4c69-a3ea-6bcf8451bd71" />
 
+📷 SW1# show cdp neighbors — Solo R1 como vecino
+
 ### Script en ejecución
 <img width="628" height="426" alt="image" src="https://github.com/user-attachments/assets/8c0170c2-e9c7-4b2f-9a1b-f114bddbcbe6" />
+
+📷 Kali ejecutando cdp_dos.py mostrando paquetes enviados
 
 ### Durante el ataque
 <img width="660" height="518" alt="image" src="https://github.com/user-attachments/assets/f3d5ecf4-9019-4bcf-8551-1501099cc50b" />
 
+📷 SW1# show cdp neighbors — 242 entradas falsas
+
 ### Contramedida aplicada
 <img width="639" height="450" alt="image" src="https://github.com/user-attachments/assets/a1d3a814-4465-4aba-8f2a-9b12de7878c0" />
+
+📷 SW1# show cdp neighbors — % CDP is not enabled
 
 ---
 
