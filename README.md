@@ -50,7 +50,8 @@ Pega el contenido del script, luego guarda con Ctrl+O → Enter → Ctrl+X
 Dar permisos de ejecución:
 bashchmod +x /home/kali-linux/cdp_dos.py
 
-🪜 Pasos de ejecución
+Pasos de ejecución:
+
 Paso 1 — SW1: Ver vecinos CDP antes del ataque
 bashshow cdp neighbors
 
